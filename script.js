@@ -1,37 +1,109 @@
-function hitung(operasi) {
-    
-  // Variabel 
-  const num1 = parseFloat(document.getElementById('num1').value);
-  const num2 = parseFloat(document.getElementById('num2').value);
+let currentOperand = '';
+let previousOperand = '';
+let operation = undefined;
 
-  // Validasi input
-  if (isNaN(num1) || isNaN(num2)) {
-    document.getElementById('hasil').textContent = "Masukkan angka yang valid!";
-    return;
-  }
+const currentOperandTextElement = document.getElementById('current-operand');
+const previousOperandTextElement = document.getElementById('previous-operand');
 
-  let hasil;
-
-  // Kondisi operasi
-  if (operasi === 'tambah') {
-    hasil = num1 + num2;
-  } else if (operasi === 'kurang') {
-    hasil = num1 - num2;
-  } else if (operasi === 'kali') {
-    hasil = num1 * num2;
-  } else if (operasi === 'bagi') {
-    hasil = num2 !== 0 ? num1 / num2 : "Error: Pembagi nol!";
-  } else {
-    hasil = "Operasi tidak dikenal";
-  }
-
-  // Menggabungkan semua elemen array menjadi satu output
-  const teks = ["Hasil perhitungan:", hasil];
-  let output = "";
-  for (let i = 0; i < teks.length; i++) {
-    output += teks[i] + " ";
-  }
-
-  // hasil atau output
-  document.getElementById('hasil').textContent = output;
+function clearDisplay() {
+  currentOperand = '';
+  previousOperand = '';
+  operation = undefined;
+  updateDisplay();
 }
+
+function deleteNumber() {
+  currentOperand = currentOperand.toString().slice(0, -1);
+  updateDisplay();
+}
+
+function appendNumber(number) {
+  if (number === '.' && currentOperand.includes('.')) return;
+  currentOperand = currentOperand.toString() + number.toString();
+  updateDisplay();
+}
+
+function appendOperator(op) {
+  if (currentOperand === '') return;
+  if (previousOperand !== '') {
+    calculate();
+  }
+  operation = op;
+  previousOperand = currentOperand;
+  currentOperand = '';
+  updateDisplay();
+}
+
+function calculate() {
+  let computation;
+  const prev = parseFloat(previousOperand);
+  const current = parseFloat(currentOperand);
+  if (isNaN(prev) || isNaN(current)) return;
+
+  switch (operation) {
+    case '+':
+      computation = prev + current;
+      break;
+    case '-':
+      computation = prev - current;
+      break;
+    case '*':
+      computation = prev * current;
+      break;
+    case '÷':
+      if (current === 0) {
+        alert("Tidak bisa membagi dengan nol!");
+        return;
+      }
+      computation = prev / current;
+      break;
+    default:
+      return;
+  }
+
+  currentOperand = computation;
+  operation = undefined;
+  previousOperand = '';
+  updateDisplay();
+}
+
+function getDisplayNumber(number) {
+  const stringNumber = number.toString();
+  const integerDigits = parseFloat(stringNumber.split('.')[0]);
+  const decimalDigits = stringNumber.split('.')[1];
+  let integerDisplay;
+  if (isNaN(integerDigits)) {
+    integerDisplay = '';
+  } else {
+    integerDisplay = integerDigits.toLocaleString('id-ID', { maximumFractionDigits: 0 });
+  }
+  if (decimalDigits != null) {
+    return `${integerDisplay},${decimalDigits}`;
+  } else {
+    return integerDisplay;
+  }
+}
+
+function updateDisplay() {
+
+  currentOperandTextElement.innerText = currentOperand;
+  if (operation != null) {
+    previousOperandTextElement.innerText = `${previousOperand} ${operation}`;
+  } else {
+    previousOperandTextElement.innerText = '';
+  }
+}
+
+
+document.addEventListener('keydown', (event) => {
+  if (event.key >= 0 && event.key <= 9) appendNumber(event.key);
+  if (event.key === '.') appendNumber('.');
+  if (event.key === '=' || event.key === 'Enter') calculate();
+  if (event.key === 'Backspace') deleteNumber();
+  if (event.key === 'Escape') clearDisplay();
+  if (event.key === '+' || event.key === '-' || event.key === '*' || event.key === '/') {
+    let op = event.key;
+    if (op === '/') op = '÷';
+    appendOperator(op);
+  }
+});

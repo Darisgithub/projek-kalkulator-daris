@@ -1,42 +1,50 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kalkulator Sederhana</title>
-    <meta name="google-site-verification" content="lt5J0hJrLi_-tXyhyfh2c8VWiIOtZ9f8Ox5XrbHQkTE" />
-    <!-- link font -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    />
-    <!-- link css -->
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kalkulator Modern</title>
+  <meta name="google-site-verification" content="lt5J0hJrLi_-tXyhyfh2c8VWiIOtZ9f8Ox5XrbHQkTE" />
+  <!-- link css -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="calculator-container">
     <div class="calculator">
-      <h2>Kalkulator</h2>
-      <input type="number" id="num1" placeholder="Angka pertama" />
-      <input type="number" id="num2" placeholder="Angka kedua" />
-
-      <div class="buttons">
-        <button onclick="hitung('tambah')">
-          <i class="fa-solid fa-plus"></i>
-        </button>
-        <button onclick="hitung('kurang')">
-          <i class="fa-solid fa-minus"></i>
-        </button>
-        <button onclick="hitung('kali')">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-        <button onclick="hitung('bagi')">
-          <i class="fa-solid fa-divide"></i>
-        </button>
+      <div class="display">
+        <div id="previous-operand" class="previous-operand"></div>
+        <div id="current-operand" class="current-operand">0</div>
       </div>
+      <div class="buttons-grid">
+        <button class="btn span-two" onclick="clearDisplay()">AC</button>
+        <button class="btn" onclick="deleteNumber()">DEL</button>
+        <button class="btn operator" onclick="appendOperator('÷')">÷</button>
 
-      <div id="hasil"></div>
+        <button class="btn" onclick="appendNumber('1')">1</button>
+        <button class="btn" onclick="appendNumber('2')">2</button>
+        <button class="btn" onclick="appendNumber('3')">3</button>
+        <button class="btn operator" onclick="appendOperator('*')">×</button>
+
+        <button class="btn" onclick="appendNumber('4')">4</button>
+        <button class="btn" onclick="appendNumber('5')">5</button>
+        <button class="btn" onclick="appendNumber('6')">6</button>
+        <button class="btn operator" onclick="appendOperator('+')">+</button>
+
+        <button class="btn" onclick="appendNumber('7')">7</button>
+        <button class="btn" onclick="appendNumber('8')">8</button>
+        <button class="btn" onclick="appendNumber('9')">9</button>
+        <button class="btn operator" onclick="appendOperator('-')">-</button>
+
+        <button class="btn" onclick="appendNumber('.')">.</button>
+        <button class="btn" onclick="appendNumber('0')">0</button>
+        <button class="btn span-two equal" onclick="calculate()">=</button>
+      </div>
     </div>
+  </div>
 
-    <script src="script.js"></script>
-  </body>
+  <script src="script.js"></script>
+</body>
+
 </html>
